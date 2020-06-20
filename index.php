@@ -35,9 +35,9 @@
 	<header>Item List</header>
 	<div id="container">
 	<?php 
-		// echo "this is exist";
+
 		$id = $_SESSION['id'];
-		// $connection = mysqli_connect("localhost", "root", "", "fabelio_test");
+
 		$connection = mysqli_connect("us-cdbr-east-05.cleardb.net", "b83bd3156c2ec4", "d11326cf", "heroku_b00850d332e4359");
 		if (!$connection)
 			die("Connection Failed: " . mysqli_error());
@@ -55,7 +55,7 @@
 			$image_url 		= $row['item_url'];
 		}
 
-		// echo "<br>".$image_url;
+
 		echo "<img width='50%' height='50%' src='".$image_url."' alt='sofa_2_dudukan_vienna'>";
 		echo "
 		<table>
