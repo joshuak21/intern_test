@@ -7,9 +7,10 @@
 		$_SESSION['id'] = 0;
 	}
 	$_SESSION['id']++;
-	echo "ID value: " . $_SESSION['id'];
+	// echo "ID value: " . $_SESSION['id'];
 
-	if(isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 10)){
+	//The session will destroyed if there's no activity for 5 minutes
+	if(isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > (3000))){
 		session_unset();
 		session_destroy();
 		echo '
@@ -26,15 +27,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Item List</title>
-	<style>
-		#container {display: flex;}
-	</style>
+	<title>Products List</title>
+	<link rel="stylesheet" type="text/css" href="includes/styling.css">
 </head>
 <body>
-	<header>Item List</header>
+	<header>Products List</header>
 	<div id="container">
-	<?php 
+	<?php
 
 		$id = $_SESSION['id'];
 
@@ -43,8 +42,10 @@
 			die("Connection Failed: " . mysqli_error());
 
 		$result = mysqli_query($connection, "SELECT item_name, item_price, item_dimension, item_colour, item_material, item_url FROM items WHERE item_id = " . $id);
-		if (!$result)
-			die("Cannot get result: " . mysqli_error());
+		if (!$result){
+			die("Please refresh the page.");
+			// die("Cannot get result: " . mysqli_error());
+		}
 
 		while ($row = mysqli_fetch_array($result)) {
 			$item_name 		= $row['item_name'];
@@ -56,29 +57,29 @@
 		}
 
 
-		echo "<img width='50%' height='50%' src='".$image_url."' alt='sofa_2_dudukan_vienna'>";
+		echo "<img src='".$image_url."'>";
 		echo "
 		<table>
 			<tr>
-				<th>Item Name</th>
+				<th>Product</th>
 				<td>".$item_name."</td>
-			<tr>
+			</tr>
 			<tr>
 				<th>Price</th>
 				<td>".$item_price."</td>
-			<tr>
+			</tr>
 			<tr>
 				<th>Dimension</th>
 				<td>".$item_dimension."</td>
-			<tr>
+			</tr>
 			<tr>
 				<th>Available Colours</th>
 				<td>".$item_colour."</td>
-			<tr>
+			</tr>
 			<tr>
 				<th>Material</th>
 				<td>".$item_material."</td>
-			<tr>
+			</tr>
 		</table>
 		";
 
